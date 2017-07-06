@@ -1,10 +1,13 @@
-# easyapplybot
-Easy Apply Bot for LinkedIn
-This bot launches the chromedriver, waits the user to login into linkedin account.
+# Easy Apply bot for LinkedIn
 
-Then the user:
- -  specifies the desired job title;
- -  specifies the desired location;
- -  choose the curriculum file.
- 
- The bot will look which jobs have the easy apply button, and then send the curriculum.
+Bot for locating positions with the Easy Apply button and then send your resume.
+
+## Getting Started
+
+This bot launches the chromedriver, waits the user login into LinkedIn account.
+
+#### Then the user:
+
+* Specifies the desired job title;
+* Specifies the desired location;
+* Selects the resume file.

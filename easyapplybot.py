@@ -42,7 +42,7 @@ def ViewBot(browser):
 	top_windows = []
 	win32gui.EnumWindows(windowEnumerationHandler, top_windows)
 	for i in top_windows:
-	   if "easyapplybot" in i[1].lower():
+	   if "linkedinbot1.2" in i[1].lower():
             plbot = i
 	   if "python.exe" in i[1].lower():
             plbot = i
@@ -95,7 +95,7 @@ def ViewBot(browser):
 				 if root not in job or roots not in job:
 				 	job = 'https://www.linkedin.com'+job
 				 browser.get(job)
-				 time.sleep(random.uniform(2.5,3.5))
+				 time.sleep(random.uniform(3.5,4.5))
 				 print( "\n" + str(count5 + pp + 1))
 				 pagina = BeautifulSoup(browser.page_source, "lxml")
 				
@@ -110,8 +110,9 @@ def ViewBot(browser):
 				  next_word = list_of_words[6]
 				  pember = next_word[:(len(next_word)-1)]
 				  xpath='//*[@'+pember+']/button'
-				  time.sleep(1)
+				  time.sleep(1.5)
 				  triggerDropDown = browser.find_element_by_xpath(xpath)
+				  time.sleep(0.5)
 				  triggerDropDown.click()
 				  time.sleep(1.5)
 				  browser.find_element_by_xpath('//*[@id="file-browse-input"]').send_keys(resumeloctn)
@@ -133,15 +134,27 @@ def ViewBot(browser):
 				  pp = pp + 25
 				  count5 = 0
 				  print("Going to next jobs page !")
-				  pyautogui.moveTo(100, 100, duration=0.5)
-				  pyautogui.moveTo(200, 100, duration=1.0)
-				  pyautogui.moveTo(200, 200, duration=0.5)
-				  pyautogui.moveTo(100, 200, duration=1.0)
-				  browser.get("https://www.linkedin.com/jobs/search/?f_E=2&keywords="+cargo+local+"&start="+str(pp))
-				  while tpage < 4000:
-				   browser.execute_script("window.scrollTo(0,"+str(tpage)+" );")
-				   tpage += 200
-				   time.sleep(2)
+				  x, y = pyautogui.position()
+				  pyautogui.moveTo(x+200, None, duration=1.0)
+				  pyautogui.moveTo(x, None, duration=0.5)
+				  while True:
+				   browser.get("https://www.linkedin.com/jobs/search/?f_E=2&keywords="+cargo+local+"&start="+str(pp))
+				   pyautogui.keyDown('ctrl')
+				   pyautogui.press('esc')
+				   pyautogui.keyUp('ctrl')
+				   time.sleep(0.5)
+				   pyautogui.press('esc')
+				   while tpage < 4000:
+				    browser.execute_script("window.scrollTo(0,"+str(tpage)+" );")
+				    tpage += 200
+				    time.sleep(2)
+				   pagina = BeautifulSoup(browser.page_source, "lxml")
+				   feasy = pagina.find("div", class_="job-card__easy-apply job-card-search__middot-before pt1")
+				   if feasy:
+				    break
+				   else:
+				    tpage = 0
+				    pp = pp + 25
 		else:
 				print ("I'm Lost Exiting")
 				break
