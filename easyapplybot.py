@@ -9,7 +9,7 @@ import pyautogui
 import win32gui, win32com.client
 from tkinter import *
 from tkinter import filedialog
- 
+import re
  
  
 def windowEnumerationHandler(hwnd, top_windows):
@@ -30,7 +30,36 @@ def getEasy(page):
 	links = []
 	achou = page.find("button", class_="jobs-s-apply__button js-apply-button")
 	return str(achou)
+	
+def loadPage(browser):
+	tpage = 0
+	while tpage < 4000:
+	 browser.execute_script("window.scrollTo(0,"+str(tpage)+" );")
+	 tpage += 200
+	 time.sleep(1)
+	return BeautifulSoup(browser.page_source, "lxml")
 
+def avoidLock():
+    x, y = pyautogui.position()
+    pyautogui.moveTo(x+200, None, duration=1.0)
+    pyautogui.moveTo(x, None, duration=0.5)
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('esc')
+    pyautogui.keyUp('ctrl')
+    time.sleep(0.5)
+    pyautogui.press('esc')	
+
+def containEasy(browser,cargo,local,pp):
+	while True:
+		browser.get("https://www.linkedin.com/jobs/search/?f_E=2&keywords="+cargo+local+"&start="+str(pp))
+		avoidLock()
+		pagina = loadPage(browser)
+		feasy = pagina.find("div", class_= re.compile(r'job-card__easy-apply'))
+		if feasy:
+			break
+		else:
+			pp = pp + 25
+	return (browser, pp)
 
 def ViewBot(browser):
 	visited = {}
@@ -42,7 +71,7 @@ def ViewBot(browser):
 	top_windows = []
 	win32gui.EnumWindows(windowEnumerationHandler, top_windows)
 	for i in top_windows:
-	   if "linkedinbot1.2" in i[1].lower():
+	   if "easyapplybot" in i[1].lower():
             plbot = i
 	   if "python.exe" in i[1].lower():
             plbot = i
@@ -75,17 +104,14 @@ def ViewBot(browser):
 	root.destroy()
 	shell.SendKeys('%')
 	win32gui.SetForegroundWindow(nvgd[0])
-	browser.get("https://www.linkedin.com/jobs/search/?f_E=2&keywords="+cargo+local)
-	while tpage < 4000:
-	 browser.execute_script("window.scrollTo(0,"+str(tpage)+" );")
-	 tpage += 200
-	 time.sleep(2)
+	browser,pp = containEasy(browser,cargo,local,pp)
+	
 	while True:
 		#sleep to make sure everything loads, add random to make us look human.
 		time.sleep(random.uniform(3.5,6.9))
 		
 		page = BeautifulSoup(browser.page_source, 'lxml')
-		tpage = 0
+		
 		
 		jobs = getJobLinks(page)
 		if jobs:
@@ -134,27 +160,8 @@ def ViewBot(browser):
 				  pp = pp + 25
 				  count5 = 0
 				  print("Going to next jobs page !")
-				  x, y = pyautogui.position()
-				  pyautogui.moveTo(x+200, None, duration=1.0)
-				  pyautogui.moveTo(x, None, duration=0.5)
-				  while True:
-				   browser.get("https://www.linkedin.com/jobs/search/?f_E=2&keywords="+cargo+local+"&start="+str(pp))
-				   pyautogui.keyDown('ctrl')
-				   pyautogui.press('esc')
-				   pyautogui.keyUp('ctrl')
-				   time.sleep(0.5)
-				   pyautogui.press('esc')
-				   while tpage < 4000:
-				    browser.execute_script("window.scrollTo(0,"+str(tpage)+" );")
-				    tpage += 200
-				    time.sleep(2)
-				   pagina = BeautifulSoup(browser.page_source, "lxml")
-				   feasy = pagina.find("div", class_="job-card__easy-apply job-card-search__middot-before pt1")
-				   if feasy:
-				    break
-				   else:
-				    tpage = 0
-				    pp = pp + 25
+				  avoidLock()
+				  browser,pp = containEasy(browser,cargo,local,pp)
 		else:
 				print ("I'm Lost Exiting")
 				break
