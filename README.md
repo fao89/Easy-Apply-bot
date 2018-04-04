@@ -16,5 +16,5 @@ This bot launches the chromedriver, waits the user login into LinkedIn account.
  `pip install -r requirements.txt`
 
 #### Installing ChromeDriver:
-`sudo apt-get install chromium-chromedriver`
-`export PATH=$PATH:/usr/lib/chromium-browser/`
+* `sudo apt-get install chromium-chromedriver`
+* `export PATH=$PATH:/usr/lib/chromium-browser/`
