@@ -11,3 +11,10 @@ This bot launches the chromedriver, waits the user login into LinkedIn account.
 * Specifies the desired job title;
 * Specifies the desired location;
 * Selects the resume file.
+
+#### Installing project:
+´pip install -r requirements.txt´
+
+#### Installing ChromeDriver:
+´sudo apt-get install chromium-chromedriver´
+´export PATH=$PATH:/usr/lib/chromium-browser/´
