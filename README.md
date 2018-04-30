@@ -18,4 +18,4 @@ This bot launches the chromedriver, waits the user login into LinkedIn account.
 
 #### Installing ChromeDriver:
 * `sudo apt-get install chromium-chromedriver`
-* `export PATH=$PATH:/usr/lib/chromium-browser/`
+* `echo  'export PATH=$PATH:/usr/lib/chromium-browser/' >> ~/.bashrc`
